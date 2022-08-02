@@ -1,0 +1,24 @@
+all:
+  vars:
+    HACLUSTER_PASSWORD: pacemaker
+    CLUSTER_NAME: cluster_name
+    ansible_python_interpreter: /usr/libexec/platform-python
+
+
+hacluster:
+  hosts:
+    rocky86-1:
+      link0_addr:  192.168.101.31
+      link1_addr:  192.168.102.31
+      manage_addr: 192.168.122.31
+    rocky86-2:
+      link0_addr:  192.168.101.32
+      link1_addr:  192.168.102.32
+      manage_addr: 192.168.122.32
+
+
+qnetd:
+  hosts:
+    rocky86-3:
+      qnetd_addr: 192.168.122.33
+
