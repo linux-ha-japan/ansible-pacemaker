@@ -67,10 +67,27 @@
 - name: add no_proxy for pcs communication
   lineinfile:
     path: /etc/environment
-    line: export no_proxy={{ NO_PROXY_LIST }}{{ ansible_env.no_proxy | default('') }}
-    regexp: ^export no_proxy={{ NO_PROXY_LIST }}
+    line: "{{ item }}={{ NO_PROXY_LIST }}{{ ansible_env.no_proxy | default('') }}"
+    regexp: "^{{ item }}="
     state: present
+  with_items:
+    - no_proxy
+    - NO_PROXY
   when: ansible_env.https_proxy is defined or ansible_env.HTTPS_PROXY is defined
+- name: check if using vagrant-proxyconf
+  stat:
+    path: /etc/profile.d/proxy.sh
+  register: vagrant_proxyconf
+- name: add no_proxy for pcs communication (for vagrant-proxyconf)
+  lineinfile:
+    path: /etc/profile.d/proxy.sh
+    line: "export {{ item }}={{ NO_PROXY_LIST }}{{ ansible_env.no_proxy | default('') }}"
+    regexp: "^export {{ item }}="
+    state: present
+  with_items:
+    - no_proxy
+    - NO_PROXY
+  when: vagrant_proxyconf.stat.exists and ansible_env.https_proxy is defined or ansible_env.HTTPS_PROXY is defined
 
 
 # 5. cluster authentication
