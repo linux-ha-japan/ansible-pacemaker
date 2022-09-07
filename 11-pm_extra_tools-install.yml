@@ -1,0 +1,21 @@
+- hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Download pm_extra_tools
+      get_url:
+        url="https://osdn.net/frs/redir.php?m=ymu&f=linux-ha%2F{{item.rev}}%2F{{item.package}}"
+        dest=./roles/pm_extra_tools-install/files/
+        timeout=20
+      with_items:
+        #- { rev: 73590, package: pm_extra_tools-1.1-1.el8.noarch.rpm }
+        #- { rev: 74514, package: pm_extra_tools-1.2-1.el8.noarch.rpm }
+        - { rev: 75714, package: pm_extra_tools-1.3-1.el8.noarch.rpm }
+
+- hosts: hacluster
+  become: true
+  gather_facts: no
+  max_fail_percentage: 0
+
+  roles:
+    - role: pm_extra_tools-install
