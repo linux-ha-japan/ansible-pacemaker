@@ -1,0 +1,6 @@
+ansible.cfg
+*.rpm
+*.iso
+*~
+*.retry
+
