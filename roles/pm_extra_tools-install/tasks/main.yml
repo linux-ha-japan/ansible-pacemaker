@@ -1,6 +1,6 @@
 - name: copy pm_extra_tools to nodes
   copy:
-    src: pm_extra_tools-1.3-1.el8.noarch.rpm
+    src: pm_extra_tools-1.4-1.el8.noarch.rpm
     dest: /var/tmp/
   register: rc_copy
 
