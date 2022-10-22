@@ -1,0 +1,9 @@
+- hosts: hacluster
+  become: true
+  max_fail_percentage: 0
+  gather_facts: no
+
+  roles:
+    - role: pm_pcsgen-resources
+      #pcsgen_csv: pm_pcsgen_sample.csv  # mandatory parameter
+      when: inventory_hostname == ansible_play_hosts[0]

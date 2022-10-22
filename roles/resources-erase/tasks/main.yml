@@ -1,0 +1,8 @@
+- name: standby nodes to stop all resources
+  command: pcs node standby --all --wait
+
+- name: erase all resource configuration
+  command: cibadmin -E --force
+
+- name: unstandby nodes
+  command: pcs node unstandby --all --wait

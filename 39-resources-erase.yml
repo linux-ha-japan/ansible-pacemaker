@@ -1,0 +1,8 @@
+- hosts: hacluster
+  become: true
+  max_fail_percentage: 0
+  gather_facts: no
+
+  roles:
+    - role: resources-erase
+      when: inventory_hostname == ansible_play_hosts[0]
