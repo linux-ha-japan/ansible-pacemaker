@@ -112,6 +112,7 @@
 ## # pcs cluster setup NODE1 addr=LINK0 addr=LINK1 NODE2 addr=LINK0 addr=LINK1
 #
 # Note: currently assumes 2 nodes / 2 links configuration
+#       --force to override even if the cluster is already configured
 #
 - name: cluster setup
   command: >
@@ -119,5 +120,6 @@
     {% for node in groups['hacluster']|sort %}
       {{ node }} addr={{ hostvars[node]['link0_addr'] }} addr={{ hostvars[node]['link1_addr'] }}
     {% endfor %}
+    --force
   when: inventory_hostname == ansible_play_hosts[0]
 
