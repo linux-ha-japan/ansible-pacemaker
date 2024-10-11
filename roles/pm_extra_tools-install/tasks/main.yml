@@ -1,6 +1,11 @@
+- name: make sure pm_extra_tools version
+  set_fact:
+    pm_extra_tools: '1.6-1.el9'
+  when: pm_extra_tools is not defined
+
 - name: copy pm_extra_tools to nodes
   copy:
-    src: pm_extra_tools-1.4-1.el8.noarch.rpm
+    src: pm_extra_tools-{{ pm_extra_tools }}.noarch.rpm
     dest: /var/tmp/
   register: rc_copy
 

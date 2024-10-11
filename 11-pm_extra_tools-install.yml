@@ -2,16 +2,22 @@
   gather_facts: no
 
   tasks:
+    - name: make sure pm_extra_tools version
+      set_fact:
+        pm_extra_tools: '1.6-1.el9'
+        #pm_extra_tools: '1.5-1.el9'
+        #pm_extra_tools: '1.4-1.el8'
+        #pm_extra_tools: '1.3-1.el8'
+        #pm_extra_tools: '1.2-1.el8'
+        #pm_extra_tools: '1.1-1.el8'
+        #pm_extra_tools: '1.0-1.el8'
+      when: pm_extra_tools is not defined
+      tags: download
+
     - name: Download pm_extra_tools
       get_url:
-        url="https://osdn.net/frs/redir.php?m=ymu&f=linux-ha%2F{{item.rev}}%2F{{item.package}}"
-        dest=./roles/pm_extra_tools-install/files/
-        timeout=20
-      with_items:
-        #- { rev: 73590, package: pm_extra_tools-1.1-1.el8.noarch.rpm }
-        #- { rev: 74514, package: pm_extra_tools-1.2-1.el8.noarch.rpm }
-        #- { rev: 75714, package: pm_extra_tools-1.3-1.el8.noarch.rpm }
-        - { rev: 77854, package: pm_extra_tools-1.4-1.el8.noarch.rpm }
+        url: "https://github.com/linux-ha-japan/pm_extra_tools/releases/download/pm_extra_tools-{{ pm_extra_tools | regex_replace('^(\\d+\\.\\d+).*','\\1') }}/pm_extra_tools-{{ pm_extra_tools }}.noarch.rpm"
+        dest: "./roles/pm_extra_tools-install/files/"
       tags: download
 
 - hosts: hacluster

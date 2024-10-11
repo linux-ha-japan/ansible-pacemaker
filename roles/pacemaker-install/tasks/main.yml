@@ -4,11 +4,18 @@
 #
 ## # yum install pcs pacemaker fence-agents-all
 #
-- name: install Pacemaker packages
+- name: install Pacemaker packages (Rocky 8)
   yum:
     name: ['pcs', 'pacemaker', 'fence-agents-all']
     enablerepo: ha
     state: present
+  when: ansible_distribution_major_version == "8"
+- name: install Pacemaker packages (Rocky 9)
+  yum:
+    name: ['pcs', 'pacemaker', 'fence-agents-all']
+    enablerepo: highavailability
+    state: present
+  when: ansible_distribution_major_version == "9"
 
 # 2. allow communitation ports if firewalld is in use
 #
@@ -122,4 +129,5 @@
     {% endfor %}
     --force
   when: inventory_hostname == ansible_play_hosts[0]
+  tags: setup
 

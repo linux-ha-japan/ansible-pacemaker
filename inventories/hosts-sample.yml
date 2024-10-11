@@ -3,6 +3,7 @@ all:
     HACLUSTER_PASSWORD: pacemaker
     CLUSTER_NAME: cluster_name
     #FENCE_AGENTS: [fence_ipmilan]
+    pm_extra_tools: 1.6-1.el9
 
 
 hacluster:
