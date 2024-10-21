@@ -35,7 +35,7 @@
 - name: make sure Pacemaker is running
   command: pcs status cluster
   changed_when: false
-  tags: always
+  tags: cib-push
 
 - name: apply CIB resource configuration to the cluster
   shell: pcs cluster cib-push {{ pcsgen_cib }} --config

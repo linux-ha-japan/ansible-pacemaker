@@ -10,6 +10,9 @@
 - block:
   - name: destroy cluster
     command: pcs cluster destroy --all
+    register: result
+    changed_when: result.rc == 0
+    failed_when: result.rc != 0 and "Unable to read /etc/corosync/corosync.conf" not in result.stderr
 
   - name: flush cluster authentication
     command: pcs host deauth {{ groups['hacluster'] | join(' ') }}
