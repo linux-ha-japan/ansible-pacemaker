@@ -1,0 +1,10 @@
+### configuration to use fence_sbd
+# initialize the SBD partition on the shared disk
+- name: initialize the SBD partition on the shared disk
+  command: "pcs stonith sbd device setup device={{ SBD_DEVICE }} --force"
+  when: inventory_hostname == ansible_play_hosts[0]
+
+- name: enable sbd
+  command: "pcs stonith sbd enable device={{ SBD_DEVICE }}"
+  when: inventory_hostname == ansible_play_hosts[0]
+  tags: sbd_enable
