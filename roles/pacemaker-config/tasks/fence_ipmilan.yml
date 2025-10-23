@@ -1,4 +1,18 @@
 ### configuration to use fence_ipmilan
+
+# check and create /etc/systemd/logind.conf if not exist
+#  By default, it existed on RHEL 9 but is absent on RHEL 10 (or later)
+- name: check if /etc/systemd/logind.conf exists
+  stat:
+    path: /etc/systemd/logind.conf
+  register: logind_conf
+- name: copy from /usr/lib/systemd/logind.conf if missing
+  copy:
+    src: /usr/lib/systemd/logind.conf
+    dest: /etc/systemd/logind.conf
+    remote_src: yes
+  when: not logind_conf.stat.exists
+
 # disable ACPI soft-off
 - name: config /etc/systemd/logind.conf - disable ACPI soft-off
   lineinfile:

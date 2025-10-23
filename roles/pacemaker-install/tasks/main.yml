@@ -10,12 +10,12 @@
     enablerepo: ha
     state: present
   when: ansible_distribution_major_version == "8"
-- name: install Pacemaker packages (Rocky 9)
+- name: install Pacemaker packages (Rocky 9+)
   yum:
     name: ['pcs', 'pacemaker', 'fence-agents-all']
     enablerepo: highavailability
     state: present
-  when: ansible_distribution_major_version == "9"
+  when: (ansible_distribution_major_version | int) >= 9
 
 # 2. allow communitation ports if firewalld is in use
 #
@@ -45,9 +45,7 @@
 ## # passwd hacluster
 #
 - name: set hacluster user password
-  user:
-    name: hacluster
-    password: "{{ HACLUSTER_PASSWORD|password_hash('sha512') }}"
+  shell: echo "hacluster:{{ HACLUSTER_PASSWORD }}" | chpasswd
 
 # 4. enable pcsd service
 #
